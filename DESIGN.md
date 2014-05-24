@@ -43,3 +43,4 @@ Extras if we have time
 - Powerups
 - Boss fights
 - Shields (regenerating)
+- Nuke/Smartbomb (Destroy all enemies on screen)
