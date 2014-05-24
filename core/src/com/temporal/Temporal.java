@@ -140,7 +140,9 @@ public class Temporal implements ApplicationListener
 
         // make sure the player stays within the screen bounds
         if(player.x < 0) player.x = 0;
-        if(player.x > 800 - 64) player.x = 800 - 64;
+        if(player.x > 575) player.x = 575;
+        if(player.y < 0) player.y = 0;
+        if(player.y > 410) player.y = 410;
 
         /*
         // check if we need to create a new raindrop
