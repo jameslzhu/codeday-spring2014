@@ -58,3 +58,6 @@ nb-configuration.xml
 
 .gradle
 build/
+
+## Windows
+Thumbs.db
