@@ -19,20 +19,19 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class Temporal implements ApplicationListener
 {
-    Texture playerTex;
     //Sound dropSound;
     //Music rainMusic;
-    SpriteBatch batch;
-    OrthographicCamera camera;
-    Rectangle player;
-    Array<Rectangle> raindrops;
-    long lastDropTime;
+    //SpriteBatch batch;
+    //OrthographicCamera camera;
+    //Rectangle player;
+    //Array<Rectangle> raindrops;
+    //long lastDropTime;
+    Engine engine;
+    Timer timer;
 
     @Override
     public void create()
     {
-        // load the images for the droplet and the player, 64x64 pixels each
-        playerTex = new Texture(Gdx.files.internal("player.png"));
 
         // load the drop sound effect and the rain background "music"
         /*
@@ -44,11 +43,7 @@ public class Temporal implements ApplicationListener
         rainMusic.setLooping(true);
         rainMusic.play();
         */
-        // create the camera and the SpriteBatch
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 640, 480);
-        batch = new SpriteBatch();
-
+        engine = new Engine(640, 480);
         // create a Rectangle to logically represent the player
         /*
         player = new Rectangle();
@@ -57,15 +52,17 @@ public class Temporal implements ApplicationListener
         player.width = 64;
         player.height = 64;
         */
-        
+        timer = new Timer();
+        /*
         player = new Rectangle();
         player.x = 800 / 2 - 64 / 2;
         player.y = 480 / 2;
         player.width = 64;
         player.height = 64;
+        */
 
         // create the raindrops array and spawn the first raindrop
-        raindrops = new Array<Rectangle>();
+        //raindrops = new Array<Rectangle>();
         //spawnRaindrop();
     }
     /*
@@ -82,57 +79,61 @@ public class Temporal implements ApplicationListener
 
     @Override
     public void render() {
+        float dt = (float) timer.lap();
+        timer.start();
+        engine.update(dt);
         // clear the screen with a dark blue color. The
         // arguments to glClearColor are the red, green
         // blue and alpha component in the range [0,1]
         // of the color to be used to clear the screen.
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // tell the camera to update its matrices.
-        camera.update();
+        //camera.update();
 
         // tell the SpriteBatch to render in the
         // coordinate system specified by the camera.
-        batch.setProjectionMatrix(camera.combined);
+        //batch.setProjectionMatrix(camera.combined);
 
         // begin a new batch and draw the player and
         // all drops
-        batch.begin();
-        batch.draw(playerTex, player.x, player.y);
+        //batch.begin();
+        //batch.draw(playerTex, player.x, player.y);
         /*
         for(Rectangle raindrop: raindrops) {
             batch.draw(dropImage, raindrop.x, raindrop.y);
         }
         */
-        batch.end();
+        //batch.end();
 
         // process user input (mouse input)
+        /*
         if(Gdx.input.isTouched()) {
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
             player.x = touchPos.x - 64 / 2;
         }
-        
+
         float dt = Gdx.graphics.getDeltaTime();
         float velocity = 200 * dt;
-        
+
         if (Gdx.input.isKeyPressed(Keys.LEFT))
         {
             player.x -= velocity;
         }
-        
+
         if (Gdx.input.isKeyPressed(Keys.RIGHT))
         {
             player.x += velocity;
         }
-        
+
         if (Gdx.input.isKeyPressed(Keys.UP))
         {
             player.y += velocity;
         }
-        
+
         if (Gdx.input.isKeyPressed(Keys.DOWN))
         {
             player.y -= velocity;
@@ -140,10 +141,8 @@ public class Temporal implements ApplicationListener
 
         // make sure the player stays within the screen bounds
         if(player.x < 0) player.x = 0;
-        if(player.x > 575) player.x = 575;
-        if(player.y < 0) player.y = 0;
-        if(player.y > 410) player.y = 410;
-
+        if(player.x > 800 - 64) player.x = 800 - 64;
+        */
         /*
         // check if we need to create a new raindrop
         if(TimeUtils.nanoTime() - lastDropTime > 1000000000) spawnRaindrop();
@@ -169,12 +168,13 @@ public class Temporal implements ApplicationListener
     @Override
     public void dispose() {
         // dispose of all the native resources3
-        playerTex.dispose();
+        engine.dispose();
+        //playerTex.dispose();
         //dropImage.dispose();
         //playerImage.dispose();
         //dropSound.dispose();
         //rainMusic.dispose();
-        batch.dispose();
+        //batch.dispose();
     }
 
     @Override
