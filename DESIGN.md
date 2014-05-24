@@ -41,5 +41,10 @@ Extras if we have time
 ----------------------
 - Weapon types
 - Powerups
+Health restore
+Shotgun lazer
 - Boss fights
+A large ship where you are trapped between two prongs that stick out of it, it fires from the
+inside of each prong, the guns facing the player, your fire does no damage to the enemy, but
+you can dodge the attacks and it hits itself.
 - Shields (regenerating)
