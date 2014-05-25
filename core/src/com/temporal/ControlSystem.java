@@ -63,6 +63,8 @@ public class ControlSystem extends EntitySystem
 
         if (fireCooldown <= 0.0f)
         {
+          if (Gdx.input.isTouched())
+          {
             double deltax = Gdx.input.getX() - position.x;
             double deltay = (Gdx.graphics.getHeight() - Gdx.input.getY()) - position.y;
             double length = Math.sqrt(deltax * deltax + deltay * deltay);
@@ -77,6 +79,7 @@ public class ControlSystem extends EntitySystem
             PlayerBullet damage = new PlayerBullet(5);
             engine.addPlayerBullet(bulletPos, bulletVel, damage);
             fireCooldown = 0.2f;
+          }
         }
         else
         {

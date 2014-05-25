@@ -33,6 +33,8 @@ public class Engine extends PooledEngine
         enemySprite = new Sprite(enemyTex);
         enemyBulletSprite = new Sprite(enemyBulletTex);
 
+        enemySprite.setOrigin(29.0f, 12.5f);
+
         Position playerPos = new Position(windowWidth / 2, windowHeight / 2);
         Velocity playerVel = new Velocity(0.0, 0.0);
         Health health = new Health(10);
@@ -43,7 +45,7 @@ public class Engine extends PooledEngine
         Velocity enemyVel = new Velocity(0.0, 0.0);
         Direction enemyDir = new Direction(90.0f);
         Enemy enemyComp = new Enemy(2, Enemy.SHOOTER);
-        Health enemyHealth = new Health(10);
+        Health enemyHealth = new Health(100000000);
         Entity enemy = addEnemy(enemyPos, enemyVel, enemyDir, enemyComp, enemyHealth);
 
         Signal<Boolean> signal = new Signal<Boolean>();
@@ -97,7 +99,9 @@ public class Engine extends PooledEngine
              58.0f,   0.0f,
              29.0f,  25.0f
         };
-        enemy.add(new CollisionBox(new Polygon(coords)));
+        Polygon poly = new Polygon(coords);
+        poly.setOrigin(29.0f, 12.5f);
+        enemy.add(new CollisionBox(poly));
 
         enemy.add(new Graphics(enemySprite));
         return enemy;

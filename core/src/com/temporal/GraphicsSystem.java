@@ -69,8 +69,8 @@ public class GraphicsSystem extends EntitySystem
     private void drawTexture(Sprite sprite, int x, int y)
     {
         batch.begin();
-        sprite.setCenterX(x);
-        sprite.setCenterY(y);
+        sprite.setX(x);
+        sprite.setY(y);
         sprite.draw(batch);
         //batch.draw(sprite, x, y);
         batch.end();
