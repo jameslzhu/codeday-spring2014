@@ -62,7 +62,7 @@ public class ControlSystem extends EntitySystem
             deltay *= 300;
 
             Position bulletPos = new Position(position.x, position.y);
-            Velocity bulletVel = new Velocity(deltax, deltay);
+            Velocity bulletVel = new Velocity(deltax, -deltay);
             PlayerBullet damage = new PlayerBullet(5);
             engine.addPlayerBullet(bulletPos, bulletVel, damage);
         }
