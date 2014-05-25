@@ -60,7 +60,7 @@ public class GraphicsSystem extends EntitySystem
             if (entity.hasComponent(Direction.class))
             {
                 Direction dir = entity.getComponent(Direction.class);
-                sprite.setRotation(dir.angle);
+                sprite.setRotation(dir.angle());
             }
             drawTexture(sprite, (int) (position.x * scale), (int) (position.y * scale));
         }
