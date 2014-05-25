@@ -53,7 +53,7 @@ public class ControlSystem extends EntitySystem
         if (Gdx.input.isTouched())
         {
             double deltax = Gdx.input.getX() - position.x;
-            double deltay = Gdx.input.getY() - position.y;
+            double deltay = (Gdx.graphics.getHeight() - Gdx.input.getY()) - position.y;
             double length = Math.sqrt(deltax * deltax + deltay * deltay);
             deltax /= length;
             deltay /= length;
@@ -62,7 +62,7 @@ public class ControlSystem extends EntitySystem
             deltay *= 300;
 
             Position bulletPos = new Position(position.x, position.y);
-            Velocity bulletVel = new Velocity(deltax, -deltay);
+            Velocity bulletVel = new Velocity(deltax, deltay);
             PlayerBullet damage = new PlayerBullet(5);
             engine.addPlayerBullet(bulletPos, bulletVel, damage);
         }
