@@ -2,11 +2,20 @@ package com.temporal;
 
 import ashley.core.Component;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class Direction extends Component
 {
-    public float angle;
-    public Direction(float angle)
+    public double x, y;
+    public Direction(double x, double y)
     {
-        this.angle = angle;
+        this.x = x;
+        this.y = y;
+    }
+
+    public float angle()
+    {
+        Vector2 vec = new Vector2((float) x, (float) y);
+        return vec.angle() - 90f;
     }
 }

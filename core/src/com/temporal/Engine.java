@@ -53,7 +53,7 @@ public class Engine extends PooledEngine
 
         Position enemyPos = new Position(windowWidth / 4, windowHeight / 4);
         Velocity enemyVel = new Velocity(0.0, 0.0);
-        Direction enemyDir = new Direction(90.0f);
+        Direction enemyDir = new Direction(0.0, 1.0);
         Enemy enemyComp = new Enemy(2, Enemy.SHOOTER);
         Health enemyHealth = new Health(10);
         Graphics enemyGraph= new Graphics(enemySprite);
@@ -70,12 +70,13 @@ public class Engine extends PooledEngine
         Signal<Boolean> signal = new Signal<Boolean>();
 
         ControlSystem controls = new ControlSystem(0, player, this, signal);
-        MovementSystem movements = new MovementSystem(1);
-        EnemyCollisionSystem enemyCollisions = new EnemyCollisionSystem(2, player, this);
-        InvincibilitySystem invincible = new InvincibilitySystem(3, player);
-        PlayerBulletCollisionSystem pbc = new PlayerBulletCollisionSystem(4, this);
-        EnemyBulletCollisionSystem ebc = new EnemyBulletCollisionSystem(5, this, player);
-        SpawnSystem spawns = new SpawnSystem(6, this, player);
+        AiSystem ai = new AiSystem(1, this, player);
+        MovementSystem movements = new MovementSystem(2);
+        EnemyCollisionSystem enemyCollisions = new EnemyCollisionSystem(3, player, this);
+        InvincibilitySystem invincible = new InvincibilitySystem(4, player);
+        PlayerBulletCollisionSystem pbc = new PlayerBulletCollisionSystem(5, this);
+        EnemyBulletCollisionSystem ebc = new EnemyBulletCollisionSystem(6, this, player);
+        SpawnSystem spawns = new SpawnSystem(7, this, player);
         GraphicsSystem graphics = new GraphicsSystem(10, windowWidth, windowHeight, 1);
 
         signal.add(movements);
@@ -88,6 +89,7 @@ public class Engine extends PooledEngine
         addSystem(ebc);
         addSystem(controls);
         addSystem(spawns);
+        addSystem(ai);
 
         addEntity(enemy);
         addEntity(player);

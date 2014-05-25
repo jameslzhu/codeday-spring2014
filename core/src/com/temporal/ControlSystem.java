@@ -13,6 +13,7 @@ import com.badlogic.gdx.Gdx;
 
 public class ControlSystem extends EntitySystem
 {
+    private static final int playerSpeed = 25;
     private Entity player;
     private Engine engine;
     private Signal<Boolean> signal;
@@ -39,25 +40,25 @@ public class ControlSystem extends EntitySystem
 
         if (Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.A))
         {
-            velocity.x = -25;
+            velocity.x = -playerSpeed;
             fastmo = true;
         }
 
         if (Gdx.input.isKeyPressed(Keys.RIGHT) || Gdx.input.isKeyPressed(Keys.D))
         {
-            velocity.x = 25;
+            velocity.x = playerSpeed;
             fastmo = true;
         }
 
         if (Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.W))
         {
-            velocity.y = 25;
+            velocity.y = playerSpeed;
             fastmo = true;
         }
 
         if (Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S))
         {
-            velocity.y = -25;
+            velocity.y = -playerSpeed;
             fastmo = true;
         }
 
@@ -74,7 +75,7 @@ public class ControlSystem extends EntitySystem
             deltax *= 100;
             deltay *= 100;
 
-            Position bulletPos = new Position(position.x, position.y);
+            Position bulletPos = new Position(position.x + 20.0f, position.y + 20.0f);
             Velocity bulletVel = new Velocity(deltax, deltay);
             PlayerBullet damage = new PlayerBullet(5);
             engine.addPlayerBullet(bulletPos, bulletVel, damage);

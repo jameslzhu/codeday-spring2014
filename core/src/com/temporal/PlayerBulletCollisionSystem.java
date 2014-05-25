@@ -38,7 +38,7 @@ public class PlayerBulletCollisionSystem extends IteratingSystem
             if (enemy.hasComponent(Direction.class))
             {
               Direction dir = enemy.getComponent(Direction.class);
-              enemyBox.poly.setRotation(dir.angle);
+              enemyBox.poly.setRotation(dir.angle());
             }
 
             if (Math.abs(bulletPos.x - enemyPos.x) < 50.0 &&
@@ -49,7 +49,7 @@ public class PlayerBulletCollisionSystem extends IteratingSystem
                     Health hp = enemy.getComponent(Health.class);
                     hp.current -= bullet.damage;
                     engine.removeEntity(entity);
-                    
+
                     if (hp.current <= 0)
                     {
                         engine.removeEntity(enemy);
