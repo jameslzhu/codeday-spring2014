@@ -26,8 +26,8 @@ public class MovementSystem extends IteratingSystem implements Listener<Boolean>
 
     if (fastmo)
     {
-      position.x += velocity.x * deltaTime * 4;
-      position.y += velocity.y * deltaTime * 4;
+      position.x += velocity.x * deltaTime * 5;
+      position.y += velocity.y * deltaTime * 5;
     }
     else
     {
