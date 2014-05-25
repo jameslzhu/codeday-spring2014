@@ -144,7 +144,7 @@ public class Engine extends PooledEngine
         enemyComp = new Enemy(2, Enemy.CHARGER);
         enemyGraph = new Graphics(chargerSprite);
         poly = new Polygon(chargerCoords);
-        poly.setOrigin(29.0f, 12.5f);
+        poly.setOrigin(27.5f, 29.5f);
       }
       else
       {
