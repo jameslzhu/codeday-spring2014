@@ -2,13 +2,13 @@ package com.temporal;
 
 import ashley.core.Component;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Graphics extends Component
 {
-    public Texture tex;
-    public Graphics(Texture texture)
+    public Sprite sprite;
+    public Graphics(Sprite sprite)
     {
-        tex = texture;
+        this.sprite = sprite;
     }
 }

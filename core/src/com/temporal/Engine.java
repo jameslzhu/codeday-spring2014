@@ -5,6 +5,7 @@ import ashley.core.PooledEngine;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
 
 public class Engine extends PooledEngine
@@ -14,12 +15,22 @@ public class Engine extends PooledEngine
     private Texture enemyTex;
     private Texture enemyBulletTex;
 
+    private Sprite playerSprite;
+    private Sprite playerBulletSprite;
+    private Sprite enemySprite;
+    private Sprite enemyBulletSprite;
+
     public Engine(int windowWidth, int windowHeight)
     {
         playerTex = new Texture(Gdx.files.internal("player.png"));
         playerBulletTex = new Texture(Gdx.files.internal("Player lazer.png"));
         enemyTex = new Texture(Gdx.files.internal("Fighter.png"));
         enemyBulletTex = new Texture(Gdx.files.internal("Figher lazer.png"));
+
+        playerSprite = new Sprite(playerTex);
+        playerBulletSprite = new Sprite(playerBulletTex);
+        enemySprite = new Sprite(enemyTex);
+        enemyBulletSprite = new Sprite(enemyBulletTex);
 
         Position playerPos = new Position(windowWidth / 2, windowHeight / 2);
         Velocity playerVel = new Velocity(0.0, 0.0);
@@ -29,9 +40,10 @@ public class Engine extends PooledEngine
 
         Position enemyPos = new Position(windowWidth / 4, windowHeight / 4);
         Velocity enemyVel = new Velocity(0.0, 0.0);
-        Enemy enemyDam = new Enemy(2);
+        Direction enemyDir = new Direction(90.0f);
+        Enemy enemyComp = new Enemy(2, Enemy.SHOOTER);
         Health enemyHealth = new Health(10);
-        Entity enemy = addEnemy(enemyPos, enemyVel, enemyDam, enemyHealth);
+        Entity enemy = addEnemy(enemyPos, enemyVel, enemyDir, enemyComp, enemyHealth);
 
         ControlSystem controls = new ControlSystem(0, player, this);
         MovementSystem movements = new MovementSystem(1);
@@ -61,16 +73,17 @@ public class Engine extends PooledEngine
         player.add(health);
         player.add(invisible);
         player.add(createCollisionBox(20.0f));
-        player.add(new Graphics(playerTex));
+        player.add(new Graphics(playerSprite));
 
         return player;
     }
 
-    public Entity addEnemy(Position pos, Velocity vel, Enemy damage, Health health)
+    public Entity addEnemy(Position pos, Velocity vel, Direction dir, Enemy damage, Health health)
     {
         Entity enemy = new Entity();
         enemy.add(pos);
         enemy.add(vel);
+        enemy.add(dir);
         enemy.add(damage);
         enemy.add(health);
 
@@ -81,7 +94,7 @@ public class Engine extends PooledEngine
         };
         enemy.add(new CollisionBox(new Polygon(coords)));
 
-        enemy.add(new Graphics(enemyTex));
+        enemy.add(new Graphics(enemySprite));
         return enemy;
     }
 
@@ -92,7 +105,7 @@ public class Engine extends PooledEngine
         bullet.add(vel);
         bullet.add(damage);
         bullet.add(createCollisionBox(7.0f));
-        bullet.add(new Graphics(playerBulletTex));
+        bullet.add(new Graphics(playerBulletSprite));
         addEntity(bullet);
     }
 
@@ -103,7 +116,7 @@ public class Engine extends PooledEngine
         bullet.add(vel);
         bullet.add(damage);
         bullet.add(createCollisionBox(7.0f));
-        bullet.add(new Graphics(enemyBulletTex));
+        bullet.add(new Graphics(enemyBulletSprite));
         addEntity(bullet);
     }
 
@@ -122,21 +135,9 @@ public class Engine extends PooledEngine
     public void dispose()
     {
         playerTex.dispose();
-
-        if (playerBulletTex != null)
-        {
-            playerBulletTex.dispose();
-        }
-
-        if (enemyTex != null)
-        {
-            enemyTex.dispose();
-        }
-
-        if (enemyBulletTex != null)
-        {
-            enemyBulletTex.dispose();
-        }
+        playerBulletTex.dispose();
+        enemyTex.dispose();
+        enemyBulletTex.dispose();
 
         getSystem(GraphicsSystem.class).dispose();
     }
