@@ -52,11 +52,6 @@ public class GraphicsSystem extends EntitySystem
             Entity entity = entities.get(keys.next());
             Texture texture = entity.getComponent(Graphics.class).tex;
             Position position = entity.getComponent(Position.class);
-			position.x += 1;
-			position.y += 1;
-
-			System.out.println("(" + position.x + ", " + position.y + ")");
-			System.out.println(scale);
             batch.draw(texture, (int) (position.x * scale), (int) (position.y * scale));
         }
         batch.end();
