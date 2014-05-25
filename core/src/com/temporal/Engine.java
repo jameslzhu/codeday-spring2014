@@ -31,7 +31,7 @@ public class Engine extends PooledEngine
         Velocity enemyVel = new Velocity(0.0, 0.0);
         Enemy enemyDam = new Enemy(2);
         Health enemyHealth = new Health(10);
-        addEnemy(enemyPos, enemyVel, enemyDam, enemyHealth);
+        Entity enemy = addEnemy(enemyPos, enemyVel, enemyDam, enemyHealth);
 
         ControlSystem controls = new ControlSystem(0, player, this);
         MovementSystem movements = new MovementSystem(1);
@@ -49,6 +49,8 @@ public class Engine extends PooledEngine
         addSystem(ebc);
         addSystem(controls);
 
+        addEntity(enemy);
+        addEntity(player);
         addEntityListener(pbc);
     }
 
@@ -61,12 +63,11 @@ public class Engine extends PooledEngine
         player.add(invisible);
         player.add(createCollisionBox(20.0f));
         player.add(new Graphics(playerTex));
-        addEntity(player);
 
         return player;
     }
 
-    public void addEnemy(Position pos, Velocity vel, Enemy damage, Health health)
+    public Entity addEnemy(Position pos, Velocity vel, Enemy damage, Health health)
     {
         Entity enemy = new Entity();
         enemy.add(pos);
@@ -89,7 +90,7 @@ public class Engine extends PooledEngine
         enemy.add(new CollisionBox(new Polygon(coords)));
 
         enemy.add(new Graphics(enemyTex));
-        addEntity(enemy);
+        return enemy;
     }
 
     public void addPlayerBullet(Position pos, Velocity vel, PlayerBullet damage)
