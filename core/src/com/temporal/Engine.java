@@ -51,7 +51,6 @@ public class Engine extends PooledEngine
 
         addEntity(enemy);
         addEntity(player);
-        addEntityListener(pbc);
     }
 
     public Entity addPlayer(Position pos, Velocity vel, Health health, Invincibility invisible)
