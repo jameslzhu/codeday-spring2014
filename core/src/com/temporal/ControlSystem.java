@@ -1,7 +1,6 @@
 package com.temporal;
 
 import ashley.core.Entity;
-import ashley.core.Engine;
 import ashley.core.Family;
 import ashley.core.EntitySystem;
 import ashley.core.EntityListener;
@@ -11,24 +10,26 @@ import ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Gdx;
 
-
-public class ControlSystem extends IteratingSystem
-
+public class ControlSystem extends EntitySystem
 {
-    public ControlSystem(int priority)
+    private Entity player;
+    private Engine engine;
+
+    public ControlSystem(int priority, Entity player, Engine engine)
     {
-        super(Family.getFamilyFor(Position.class, Velocity.class), priority);
+        super(priority);
+        this.player = player;
+        this.engine = engine;
     }
 
-    @Override
-    public void processEntity (Entity entity, float deltaTime)
+    public void update (float deltaTime)
     {
-        Position position = entity.getComponent(Position.class);
-        Velocity velocity = entity.getComponent(Velocity.class);
-        
+        Position position = player.getComponent(Position.class);
+        Velocity velocity = player.getComponent(Velocity.class);
+
         velocity.x = 0;
         velocity.y = 0;
-        
+
         if (Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.A))
         {
             velocity.x = -1;
@@ -48,24 +49,22 @@ public class ControlSystem extends IteratingSystem
         {
             velocity.y = -1;
         }
-        
+
         if (Gdx.input.isTouched())
         {
-            int mousex = Gdx.input.getX();
-            int mousey = Gdx.input.getY();
-            double deltax = mousex - position.x;
-            double deltay = mousey - position.y;
+            double deltax = Gdx.input.getX() - position.x;
+            double deltay = Gdx.input.getY() - position.y;
             double length = Math.sqrt(deltax * deltax + deltay * deltay);
             deltax /= length;
             deltay /= length;
-            
+
             deltax *= 3;
             deltay *= 3;
-            Entity bullet = new Entity();
+
             Position bulletPos = new Position(position.x, position.y);
-            bullet.add(bulletPos);
             Velocity bulletVel = new Velocity(deltax, deltay);
-            bullet.add(bulletVel);
+            PlayerBullet damage = new PlayerBullet(5);
+            engine.addPlayerBullet(bulletPos, bulletVel, damage);
         }
     }
 }

@@ -51,45 +51,56 @@ public class Engine extends PooledEngine
             0.0f, size
         };
         Polygon shape = new Polygon(vertices);
-        player.add(new CollisionBox(shape));
+        player.add(createCollisionBox(20.0f));
         player.add(new Graphics(playerTex));
         addEntity(player);
 
         return player;
     }
 
-    public void addEnemy(Position pos, Velocity vel, Enemy damage, Health health, CollisionBox box)
+    public void addEnemy(Position pos, Velocity vel, Enemy damage, Health health)
     {
         Entity enemy = new Entity();
         enemy.add(pos);
         enemy.add(vel);
         enemy.add(damage);
         enemy.add(health);
-        enemy.add(box);
+        enemy.add(createCollisionBox(20.0f));
         enemy.add(new Graphics(enemyTex));
         addEntity(enemy);
     }
 
-    public void addPlayerBullet(Position pos, Velocity vel, PlayerBullet damage, CollisionBox box)
+    public void addPlayerBullet(Position pos, Velocity vel, PlayerBullet damage)
     {
         Entity bullet = new Entity();
         bullet.add(pos);
         bullet.add(vel);
         bullet.add(damage);
-        bullet.add(box);
+        bullet.add(createCollisionBox(4.0f));
         bullet.add(new Graphics(playerBulletTex));
         addEntity(bullet);
     }
 
-    public void addEnemyBullet(Position pos, Velocity vel, EnemyBullet damage, CollisionBox box)
+    public void addEnemyBullet(Position pos, Velocity vel, EnemyBullet damage)
     {
         Entity bullet = new Entity();
         bullet.add(pos);
         bullet.add(vel);
         bullet.add(damage);
-        bullet.add(box);
+        bullet.add(createCollisionBox(4.0f));
         bullet.add(new Graphics(enemyBulletTex));
         addEntity(bullet);
+    }
+
+    private CollisionBox createCollisionBox(float size)
+    {
+        float[] coords = {
+            0.0f, 0.0f,
+            size, 0.0f,
+            size, size,
+            0.0f, size
+        };
+        return new CollisionBox(new Polygon(coords));
     }
 
     public void dispose()
