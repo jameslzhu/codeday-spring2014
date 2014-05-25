@@ -63,26 +63,20 @@ public class ControlSystem extends EntitySystem
 
         if (fireCooldown <= 0.0f)
         {
-          if (Gdx.input.isTouched())
-          {
-              double x = position.x + 20.0;
-              double y = position.y + 20.0;
+            double deltax = Gdx.input.getX() - position.x;
+            double deltay = (Gdx.graphics.getHeight() - Gdx.input.getY()) - position.y;
+            double length = Math.sqrt(deltax * deltax + deltay * deltay);
+            deltax /= length;
+            deltay /= length;
 
-              double deltax = Gdx.input.getX() - x;
-              double deltay = (Gdx.graphics.getHeight() - Gdx.input.getY()) - y;
-              double length = Math.sqrt(deltax * deltax + deltay * deltay);
-              deltax /= length;
-              deltay /= length;
+            deltax *= 100;
+            deltay *= 100;
 
-              deltax *= 100;
-              deltay *= 100;
-
-              Position bulletPos = new Position(x, y);
-              Velocity bulletVel = new Velocity(deltax, deltay);
-              PlayerBullet damage = new PlayerBullet(5);
-              engine.addPlayerBullet(bulletPos, bulletVel, damage);
-              fireCooldown = 0.2f;
-          }
+            Position bulletPos = new Position(position.x, position.y);
+            Velocity bulletVel = new Velocity(deltax, deltay);
+            PlayerBullet damage = new PlayerBullet(5);
+            engine.addPlayerBullet(bulletPos, bulletVel, damage);
+            fireCooldown = 0.2f;
         }
         else
         {

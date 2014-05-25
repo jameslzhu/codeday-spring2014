@@ -8,11 +8,11 @@ import ashley.utils.IntMap;
 
 import com.badlogic.gdx.math.Intersector;
 
-public class PlayerBulletCollisionSystem extends IteratingSystem implements EntityListener
+public class PlayerBulletCollisionSystem extends IteratingSystem
 {
     private IntMap<Entity> enemyEntities;
     private Engine engine;
-    
+
     public PlayerBulletCollisionSystem(int priority, Engine engine)
     {
         super(Family.getFamilyFor(PlayerBullet.class, CollisionBox.class, Position.class), priority);
@@ -49,29 +49,15 @@ public class PlayerBulletCollisionSystem extends IteratingSystem implements Enti
                     Health hp = enemy.getComponent(Health.class);
                     hp.current -= bullet.damage;
                     engine.removeEntity(entity);
-
-                    System.out.println("PlayerBullet hit enemy");
-
+                    
                     if (hp.current <= 0)
                     {
-                        System.out.println(enemy);
                         engine.removeEntity(enemy);
-                        System.out.println("Enemy dead");
-                        System.out.println(hp.current);
                     }
 
                     break;
                 }
             }
         }
-    }
-
-    public void entityAdded(Entity entity)
-    {
-    }
-
-    public void entityRemoved(Entity entity)
-    {
-        System.out.println("Removed " + entity);
     }
 }
