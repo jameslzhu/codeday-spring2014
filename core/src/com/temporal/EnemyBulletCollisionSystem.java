@@ -35,7 +35,9 @@ public class EnemyBulletCollisionSystem extends IteratingSystem
                 engine.removeEntity(entity);
 
                 if (health.current <= 0)
+                {
                     engine.removeEntity(player);
+                }
             }
         }
     }

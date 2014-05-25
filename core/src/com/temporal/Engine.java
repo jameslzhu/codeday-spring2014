@@ -27,7 +27,7 @@ public class Engine extends PooledEngine
         Invincibility inv = new Invincibility();
         Entity player = addPlayer(playerPos, playerVel, health, inv);
 
-        Position enemyPos = new Position(windowWidth / 2, windowHeight / 2);
+        Position enemyPos = new Position(windowWidth / 4, windowHeight / 4);
         Velocity enemyVel = new Velocity(0.0, 0.0);
         Enemy enemyDam = new Enemy(2);
         Health enemyHealth = new Health(10);
@@ -48,6 +48,8 @@ public class Engine extends PooledEngine
         addSystem(pbc);
         addSystem(ebc);
         addSystem(controls);
+
+        addEntityListener(pbc);
     }
 
     public Entity addPlayer(Position pos, Velocity vel, Health health, Invincibility invisible)
@@ -96,7 +98,6 @@ public class Engine extends PooledEngine
         bullet.add(pos);
         bullet.add(vel);
         bullet.add(damage);
-        bullet.add(createCollisionBox(1.0f));
 
         float[] coords = {
              0.0f,  0.0f,

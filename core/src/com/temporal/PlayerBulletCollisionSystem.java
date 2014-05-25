@@ -1,13 +1,14 @@
 package com.temporal;
 
 import ashley.core.Entity;
+import ashley.core.EntityListener;
 import ashley.core.Family;
 import ashley.systems.IteratingSystem;
 import ashley.utils.IntMap;
 
 import com.badlogic.gdx.math.Intersector;
 
-public class PlayerBulletCollisionSystem extends IteratingSystem
+public class PlayerBulletCollisionSystem extends IteratingSystem implements EntityListener
 {
     private IntMap<Entity> enemyEntities;
     private Engine engine;
@@ -48,13 +49,24 @@ public class PlayerBulletCollisionSystem extends IteratingSystem
 
                     if (hp.current <= 0)
                     {
+                        System.out.println(enemy);
                         engine.removeEntity(enemy);
                         System.out.println("Enemy dead");
+                        System.out.println(hp.current);
                     }
 
                     break;
                 }
             }
         }
+    }
+
+    public void entityAdded(Entity entity)
+    {
+    }
+
+    public void entityRemoved(Entity entity)
+    {
+        System.out.println("Removed " + entity);
     }
 }

@@ -36,22 +36,35 @@ public class EnemyCollisionSystem extends EntitySystem
       while (keys.hasNext)
       {
         Entity enemy = enemyEntities.get(keys.next());
-        if (Intersector.overlapConvexPolygons(player.getComponent(CollisionBox.class).poly, enemy.getComponent(CollisionBox.class).poly))
+        CollisionBox enemyBox = enemy.getComponent(CollisionBox.class);
+        Position enemyPos = enemy.getComponent(Position.class);
+        enemyBox.poly.setPosition((float) enemyPos.x, (float) enemyPos.y);
+
+        CollisionBox playerBox = player.getComponent(CollisionBox.class);
+        Position playerPos = player.getComponent(Position.class);
+        playerBox.poly.setPosition((float) playerPos.x, (float) playerPos.y);
+
+        if (Intersector.overlapConvexPolygons(playerBox.poly, enemyBox.poly))
         {
           // Player health decrease
           player.getComponent(Health.class).current -= enemy.getComponent(Enemy.class).playerHealthHit;
-          // Player invulnerable
-          player.getComponent(Invincibility.class).isInvincible = true;
 
-          // Player velocity stops
-          player.getComponent(Velocity.class).x = 0;
-          player.getComponent(Velocity.class).y = 0;
+          if (player.getComponent(Health.class).current <= 0)
+          {
+            engine.removeEntity(player);
+          }
+          else
+          {
+            // Player invulnerable
+            player.getComponent(Invincibility.class).isInvincible = true;
+
+            // Player velocity stops
+            player.getComponent(Velocity.class).x = 0;
+            player.getComponent(Velocity.class).y = 0;
+          }
 
           // Enemy dies
           engine.removeEntity(enemy);
-
-          if (player.getComponent(Health.class).current <= 0)
-            engine.removeEntity(player);
 
           break;
         }
