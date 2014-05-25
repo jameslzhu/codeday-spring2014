@@ -31,13 +31,7 @@ public class AiSystem extends IteratingSystem
         switch (enemy.type)
         {
             case Enemy.SHOOTER:
-                enemyDir.x = playerPos.x - enemyPos.x;
-                enemyDir.y = playerPos.y - enemyPos.y;
-                // Normalize
-                double length = Math.sqrt(enemyDir.x * enemyDir.x + enemyDir.y * enemyDir.y);
-                enemyDir.x /= length;
-                enemyDir.y /= length;
-
+                pointTowardsPlayer(enemyDir, playerPos, enemyPos);
                 // Shoot at player
                 if (enemy.cooldown <= 0.0f)
                 {
@@ -53,9 +47,41 @@ public class AiSystem extends IteratingSystem
                 }
                 break;
             case Enemy.CHARGER:
+                // Charge at player
+                if (enemy.cooldown <= 0.0f)
+                {
+                    pointTowardsPlayer(enemyDir, playerPos, enemyPos);
+                    double chargeVel = 50;
+                    enemyVel.x = enemyDir.x * 50;
+                    enemyVel.y = enemyDir.y * 50;
+                    enemy.cooldown = 3.0f;
+                }
+                else if (enemy.cooldown <= 1.0f)
+                {
+                    pointTowardsPlayer(enemyDir, playerPos, enemyPos);
+                    enemyVel.x = 0;
+                    enemyVel.y = 0;
+                    enemy.cooldown -= deltaTime;
+                }
+                else
+                {
+                    enemy.cooldown -= deltaTime;
+                }
                 break;
             default:
                 break;
         }
+    }
+
+    private void pointTowardsPlayer(Direction dir, Position playerPos, Position enemyPos)
+    {
+        // Point enemy towards player
+        dir.x = playerPos.x - enemyPos.x;
+        dir.y = playerPos.y - enemyPos.y;
+
+        // Normalize direction vector
+        double length = Math.sqrt(dir.x * dir.x + dir.y * dir.y);
+        dir.x /= length;
+        dir.y /= length;
     }
 }
