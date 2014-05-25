@@ -14,6 +14,7 @@ public class EnemyBulletCollisionSystem extends IteratingSystem
     public EnemyBulletCollisionSystem(int priority, Engine engine, Entity player)
     {
         super(Family.getFamilyFor(EnemyBullet.class, CollisionBox.class), priority);
+        this.engine = engine;
         this.player = player;
     }
 
@@ -33,7 +34,7 @@ public class EnemyBulletCollisionSystem extends IteratingSystem
                 health.current -= bullet.damage;
                 engine.removeEntity(entity);
 
-                if (health.current < 0)
+                if (health.current <= 0)
                     engine.removeEntity(player);
             }
         }

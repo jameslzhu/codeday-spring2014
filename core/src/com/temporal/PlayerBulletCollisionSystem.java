@@ -14,7 +14,9 @@ public class PlayerBulletCollisionSystem extends IteratingSystem
     
     public PlayerBulletCollisionSystem(int priority, Engine engine)
     {
-        super(Family.getFamilyFor(PlayerBullet.class, CollisionBox.class), priority);
+        super(Family.getFamilyFor(PlayerBullet.class, CollisionBox.class, Position.class), priority);
+        this.engine = engine;
+        enemyEntities = engine.getEntitiesFor(Family.getFamilyFor(Enemy.class, CollisionBox.class, Position.class, Health.class));
     }
 
     @Override
@@ -23,6 +25,7 @@ public class PlayerBulletCollisionSystem extends IteratingSystem
         CollisionBox bulletBox = entity.getComponent(CollisionBox.class);
         PlayerBullet bullet = entity.getComponent(PlayerBullet.class);
         Position bulletPos = entity.getComponent(Position.class);
+        bulletBox.poly.setPosition((float) bulletPos.x, (float) bulletPos.y);
 
         IntMap.Keys keys = enemyEntities.keys();
         while (keys.hasNext)
@@ -30,18 +33,27 @@ public class PlayerBulletCollisionSystem extends IteratingSystem
             Entity enemy = enemyEntities.get(keys.next());
             CollisionBox enemyBox = enemy.getComponent(CollisionBox.class);
             Position enemyPos = enemy.getComponent(Position.class);
+            enemyBox.poly.setPosition((float) enemyPos.x, (float) enemyPos.y);
 
-            if (Math.abs(bulletPos.x - enemyPos.x) < 10.0 &&
-                Math.abs(bulletPos.y - enemyPos.y) < 10.0)
+            if (Math.abs(bulletPos.x - enemyPos.x) < 50.0 &&
+                Math.abs(bulletPos.y - enemyPos.y) < 50.0)
             {
                 if (Intersector.overlapConvexPolygons(enemyBox.poly, bulletBox.poly))
                 {
+                    System.out.println("enemy:(" + enemyBox.poly.getX() + "," + enemyBox.poly.getY() + ")");
+                    System.out.println("bullet:(" + bulletBox.poly.getX() + "," + bulletBox.poly.getY() + ")");
+
                     Health hp = enemy.getComponent(Health.class);
                     hp.current -= bullet.damage;
                     engine.removeEntity(entity);
 
-                    if (hp.current < 0)
+                    System.out.println("PlayerBullet hit enemy");
+
+                    if (hp.current <= 0)
+                    {
                         engine.removeEntity(enemy);
+                        System.out.println("Enemy dead");
+                    }
 
                     break;
                 }

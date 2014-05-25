@@ -27,16 +27,26 @@ public class Engine extends PooledEngine
         Invincibility inv = new Invincibility();
         Entity player = addPlayer(playerPos, playerVel, health, inv);
 
+        Position enemyPos = new Position(windowWidth / 2, windowHeight / 2);
+        Velocity enemyVel = new Velocity(0.0, 0.0);
+        Enemy enemyDam = new Enemy(2);
+        Health enemyHealth = new Health(10);
+        addEnemy(enemyPos, enemyVel, enemyDam, enemyHealth);
+
         ControlSystem controls = new ControlSystem(0, player, this);
         MovementSystem movements = new MovementSystem(1);
         EnemyCollisionSystem enemyCollisions = new EnemyCollisionSystem(2, player, this);
-        InvincibilitySystem invisibles = new InvincibilitySystem(3, player);
+        InvincibilitySystem invincible = new InvincibilitySystem(3, player);
+        PlayerBulletCollisionSystem pbc = new PlayerBulletCollisionSystem(4, this);
+        EnemyBulletCollisionSystem ebc = new EnemyBulletCollisionSystem(5, this, player);
         GraphicsSystem graphics = new GraphicsSystem(10, windowWidth, windowHeight, 1);
 
         addSystem(graphics);
         addSystem(movements);
         addSystem(enemyCollisions);
-        addSystem(invisibles);
+        addSystem(invincible);
+        addSystem(pbc);
+        addSystem(ebc);
         addSystem(controls);
     }
 
@@ -47,14 +57,6 @@ public class Engine extends PooledEngine
         player.add(vel);
         player.add(health);
         player.add(invisible);
-        float size = 20.0f;
-        float[] vertices = {
-            0.0f, 0.0f,
-            size, 0.0f,
-            size, size,
-            0.0f, size
-        };
-        Polygon shape = new Polygon(vertices);
         player.add(createCollisionBox(20.0f));
         player.add(new Graphics(playerTex));
         addEntity(player);
@@ -69,7 +71,21 @@ public class Engine extends PooledEngine
         enemy.add(vel);
         enemy.add(damage);
         enemy.add(health);
-        enemy.add(createCollisionBox(20.0f));
+
+        /*
+        float[] coords = {
+              0.0f,   0.0f,
+             30.0f,   0.0f,
+             15.0f,  30.0f
+        };
+        */
+        float[] coords = {
+              0.0f,   0.0f,
+             50.0f,   0.0f,
+             25.0f,  25.0f
+        };
+        enemy.add(new CollisionBox(new Polygon(coords)));
+
         enemy.add(new Graphics(enemyTex));
         addEntity(enemy);
     }
@@ -80,7 +96,16 @@ public class Engine extends PooledEngine
         bullet.add(pos);
         bullet.add(vel);
         bullet.add(damage);
-        bullet.add(createCollisionBox(4.0f));
+        bullet.add(createCollisionBox(1.0f));
+
+        float[] coords = {
+             0.0f,  0.0f,
+            15.0f,  0.0f,
+            15.0f, 15.0f,
+             0.0f, 15.0f
+        };
+        bullet.add(new CollisionBox(new Polygon(coords)));
+
         bullet.add(new Graphics(playerBulletTex));
         addEntity(bullet);
     }
@@ -91,7 +116,7 @@ public class Engine extends PooledEngine
         bullet.add(pos);
         bullet.add(vel);
         bullet.add(damage);
-        bullet.add(createCollisionBox(4.0f));
+        bullet.add(createCollisionBox(1.0f));
         bullet.add(new Graphics(enemyBulletTex));
         addEntity(bullet);
     }
@@ -99,11 +124,21 @@ public class Engine extends PooledEngine
     private CollisionBox createCollisionBox(float size)
     {
         float[] coords = {
+            -size, -size,
+            size, -size,
+            size, size,
+            -size, size
+        };
+        /*
+        float[] coords = {
             0.0f, 0.0f,
             size, 0.0f,
             size, size,
             0.0f, size
         };
+        */
+        Polygon poly = new Polygon(coords);
+//        poly.setOrigin(size, size);
         return new CollisionBox(new Polygon(coords));
     }
 

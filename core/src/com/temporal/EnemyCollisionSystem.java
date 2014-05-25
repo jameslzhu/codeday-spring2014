@@ -50,7 +50,7 @@ public class EnemyCollisionSystem extends EntitySystem
           // Enemy dies
           engine.removeEntity(enemy);
 
-          if (player.getComponent(Health.class).current < 0)
+          if (player.getComponent(Health.class).current <= 0)
             engine.removeEntity(player);
 
           break;
