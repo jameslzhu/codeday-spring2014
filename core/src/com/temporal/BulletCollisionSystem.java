@@ -20,16 +20,19 @@ public class BulletCollisionSystem extends IteratingSystem
     @Override
     public void processEntity(Entity entity, float deltaTime)
     {
-        CollisionBox playerBox = player.getComponent(CollisionBox.class);
-        Health health = player.getComponent(Health.class);
-
-        CollisionBox bulletBox = entity.getComponent(CollisionBox.class);
-        Bullet bullet = entity.getComponent(Bullet.class);
-
-        if (Intersector.overlapConvexPolygons(playerBox.poly, bulletBox.poly))
+        if (!player.getComponent(Invincibility.class).isInvincible)
         {
-            health.current -= bullet.damage;
-            engine.removeEntity(entity);
+            CollisionBox playerBox = player.getComponent(CollisionBox.class);
+            Health health = player.getComponent(Health.class);
+
+            CollisionBox bulletBox = entity.getComponent(CollisionBox.class);
+            Bullet bullet = entity.getComponent(Bullet.class);
+
+            if (Intersector.overlapConvexPolygons(playerBox.poly, bulletBox.poly))
+            {
+                health.current -= bullet.damage;
+                engine.removeEntity(entity);
+            }
         }
     }
 }

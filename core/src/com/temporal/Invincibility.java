@@ -5,7 +5,7 @@ import ashley.core.Component;
 public class Invincibility extends Component
 {
   public boolean isInvincible;
-  public double timeAccumulator;
+  public float timeAccumulator;
 
   public Invincibility()
   {
