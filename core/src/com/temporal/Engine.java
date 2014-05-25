@@ -102,7 +102,18 @@ public class Engine extends PooledEngine
         player.add(vel);
         player.add(health);
         player.add(invisible);
-        player.add(createCollisionBox(20.0f));
+
+        float[] playerCoords = {
+             25.0f,   0.0f,
+             50.0f,  25.0f,
+             25.0f,  50.0f,
+              0.0f,  25.0f
+        };
+        Polygon poly = new Polygon(playerCoords);
+        poly.setOrigin(25.0f, 25.0f);
+        CollisionBox box = new CollisionBox(poly);
+        player.add(box);
+
         player.add(new Graphics(playerSprite));
 
         return player;
