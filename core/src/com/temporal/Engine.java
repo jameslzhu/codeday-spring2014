@@ -75,13 +75,6 @@ public class Engine extends PooledEngine
         enemy.add(damage);
         enemy.add(health);
 
-        /*
-        float[] coords = {
-              0.0f,   0.0f,
-             30.0f,   0.0f,
-             15.0f,  30.0f
-        };
-        */
         float[] coords = {
               0.0f,   0.0f,
              58.0f,   0.0f,
@@ -99,15 +92,7 @@ public class Engine extends PooledEngine
         bullet.add(pos);
         bullet.add(vel);
         bullet.add(damage);
-
-        float[] coords = {
-             0.0f,  0.0f,
-             7.0f,  0.0f,
-             7.0f,  7.0f,
-             0.0f,  7.0f
-        };
-        bullet.add(new CollisionBox(new Polygon(coords)));
-
+        bullet.add(createCollisionBox(7.0f));
         bullet.add(new Graphics(playerBulletTex));
         addEntity(bullet);
     }
@@ -118,7 +103,7 @@ public class Engine extends PooledEngine
         bullet.add(pos);
         bullet.add(vel);
         bullet.add(damage);
-        bullet.add(createCollisionBox(1.0f));
+        bullet.add(createCollisionBox(7.0f));
         bullet.add(new Graphics(enemyBulletTex));
         addEntity(bullet);
     }
@@ -126,21 +111,12 @@ public class Engine extends PooledEngine
     private CollisionBox createCollisionBox(float size)
     {
         float[] coords = {
-            -size, -size,
-            size, -size,
-            size, size,
-            -size, size
-        };
-        /*
-        float[] coords = {
             0.0f, 0.0f,
             size, 0.0f,
             size, size,
             0.0f, size
         };
-        */
         Polygon poly = new Polygon(coords);
-//        poly.setOrigin(size, size);
         return new CollisionBox(new Polygon(coords));
     }
 
