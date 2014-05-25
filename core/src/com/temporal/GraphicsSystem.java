@@ -26,7 +26,7 @@ public class GraphicsSystem extends EntitySystem
         camera = new OrthographicCamera();
         camera.setToOrtho(false, windowWidth, windowHeight);
         batch = new SpriteBatch();
-		scale = scaling;
+        scale = scaling;
     }
 
     @Override
@@ -57,8 +57,8 @@ public class GraphicsSystem extends EntitySystem
         batch.end();
     }
 
-	public void dispose()
-	{
-		batch.dispose();
-	}
+    public void dispose()
+    {
+        batch.dispose();
+    }
 }

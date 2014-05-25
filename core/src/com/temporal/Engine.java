@@ -17,13 +17,17 @@ public class Engine extends PooledEngine
     public Engine(int windowWidth, int windowHeight)
     {
         playerTex = new Texture(Gdx.files.internal("player.png"));
+        playerBulletTex = new Texture(Gdx.files.internal("Player lazer.png"));
+        enemyTex = new Texture(Gdx.files.internal("Fighter.png"));
+        enemyBulletTex = new Texture(Gdx.files.internal("Figher lazer.png"));
+
         Position playerPos = new Position(windowWidth / 2, windowHeight / 2);
         Velocity playerVel = new Velocity(0.0, 0.0);
         Health health = new Health(10);
         Invincibility inv = new Invincibility();
         Entity player = addPlayer(playerPos, playerVel, health, inv);
 
-        ControlSystem controls = new ControlSystem(0);
+        ControlSystem controls = new ControlSystem(0, player, this);
         MovementSystem movements = new MovementSystem(1);
         EnemyCollisionSystem enemyCollisions = new EnemyCollisionSystem(2, player, this);
         InvincibilitySystem invisibles = new InvincibilitySystem(3, player);

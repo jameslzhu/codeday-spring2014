@@ -32,22 +32,22 @@ public class ControlSystem extends EntitySystem
 
         if (Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.A))
         {
-            velocity.x = -1;
+            velocity.x = -100;
         }
 
         if (Gdx.input.isKeyPressed(Keys.RIGHT) || Gdx.input.isKeyPressed(Keys.D))
         {
-            velocity.x = 1;
+            velocity.x = 100;
         }
 
         if (Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.W))
         {
-            velocity.y = 1;
+            velocity.y = 100;
         }
 
         if (Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S))
         {
-            velocity.y = -1;
+            velocity.y = -100;
         }
 
         if (Gdx.input.isTouched())
@@ -58,8 +58,8 @@ public class ControlSystem extends EntitySystem
             deltax /= length;
             deltay /= length;
 
-            deltax *= 3;
-            deltay *= 3;
+            deltax *= 300;
+            deltay *= 300;
 
             Position bulletPos = new Position(position.x, position.y);
             Velocity bulletVel = new Velocity(deltax, deltay);
