@@ -57,7 +57,15 @@ public class Engine extends PooledEngine
         Enemy enemyComp = new Enemy(2, Enemy.SHOOTER);
         Health enemyHealth = new Health(10);
         Graphics enemyGraph= new Graphics(enemySprite);
-        Entity enemy = addEnemy(enemyPos, enemyVel, enemyDir, enemyComp, enemyHealth, enemyGraph);
+        float[] shooterCoords = {
+              0.0f,   0.0f,
+             58.0f,   0.0f,
+             29.0f,  25.0f
+        };
+        Polygon enemyPoly = new Polygon(shooterCoords);
+        enemyPoly.setOrigin(29.0f, 12.5f);
+        CollisionBox enemyBox = new CollisionBox(enemyPoly);
+        Entity enemy = addEnemy(enemyPos, enemyVel, enemyDir, enemyComp, enemyHealth, enemyGraph, enemyBox);
 
         Signal<Boolean> signal = new Signal<Boolean>();
 
@@ -98,7 +106,7 @@ public class Engine extends PooledEngine
         return player;
     }
 
-    public Entity addEnemy(Position pos, Velocity vel, Direction dir, Enemy damage, Health health, Graphics enemyGraph)
+    public Entity addEnemy(Position pos, Velocity vel, Direction dir, Enemy damage, Health health, Graphics enemyGraph, CollisionBox box)
     {
         Entity enemy = new Entity();
         enemy.add(pos);
@@ -107,14 +115,7 @@ public class Engine extends PooledEngine
         enemy.add(damage);
         enemy.add(health);
 
-        float[] coords = {
-              0.0f,   0.0f,
-             58.0f,   0.0f,
-             29.0f,  25.0f
-        };
-        Polygon poly = new Polygon(coords);
-        poly.setOrigin(29.0f, 12.5f);
-        enemy.add(new CollisionBox(poly));
+        enemy.add(box);
         enemy.add(enemyGraph);
 
         return enemy;
@@ -124,18 +125,36 @@ public class Engine extends PooledEngine
       Health enemyHealth = new Health(10);
       Enemy enemyComp;
       Graphics enemyGraph;
+      Polygon poly;
+      float[] chargerCoords = {
+           27.5f,   0.0f,
+           17.0f,  40.0f,
+           24.0f,  59.0f,
+           31.0f,  59.0f,
+           38.0f,  40.0f
+      };
+      float[] shooterCoords = {
+            0.0f,   0.0f,
+           58.0f,   0.0f,
+           29.0f,  25.0f
+      };
 
       if (rand.nextBoolean())
       {
         enemyComp = new Enemy(2, Enemy.CHARGER);
         enemyGraph = new Graphics(chargerSprite);
+        poly = new Polygon(chargerCoords);
+        poly.setOrigin(29.0f, 12.5f);
       }
       else
       {
         enemyComp = new Enemy(2, Enemy.SHOOTER);
         enemyGraph = new Graphics(enemySprite);
+        poly = new Polygon(shooterCoords);
+        poly.setOrigin(29.0f, 12.5f);
       }
-      Entity enemy = addEnemy(pos, vel, dir, enemyComp, enemyHealth, enemyGraph);
+      CollisionBox box = new CollisionBox(poly);
+      Entity enemy = addEnemy(pos, vel, dir, enemyComp, enemyHealth, enemyGraph, box);
 
       addEntity(enemy);
     }
