@@ -23,6 +23,37 @@ public class Engine extends PooledEngine
         addSystem(graphics);
     }
 
+    public void addEnemy(Position pos, Velocity vel, Enemy damage, Health health, CollisionBox box)
+    {
+        Entity enemy = new Entity();
+        enemy.add(pos);
+        enemy.add(vel);
+        enemy.add(damage);
+        enemy.add(health);
+        enemy.add(box);
+        addEntity(enemy);
+    }
+
+    public void addPlayerBullet(Position pos, Velocity vel, PlayerBullet damage, CollisionBox box)
+    {
+        Entity bullet = new Entity();
+        bullet.add(pos);
+        bullet.add(vel);
+        bullet.add(damage);
+        bullet.add(box);
+        addEntity(bullet);
+    }
+
+    public void addEnemyBullet(Position pos, Velocity vel, EnemyBullet damage, CollisionBox box)
+    {
+        Entity bullet = new Entity();
+        bullet.add(pos);
+        bullet.add(vel);
+        bullet.add(damage);
+        bullet.add(box);
+        addEntity(bullet);
+    }
+
     public void dispose()
     {
         playerTex.dispose();
