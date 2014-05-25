@@ -13,7 +13,7 @@ import com.badlogic.gdx.Gdx;
 
 public class ControlSystem extends EntitySystem
 {
-    private static final int playerSpeed = 25;
+    private static final int playerSpeed = 35;
     private Entity player;
     private Engine engine;
     private Signal<Boolean> signal;
