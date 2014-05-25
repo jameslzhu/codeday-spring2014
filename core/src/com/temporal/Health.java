@@ -1,3 +1,5 @@
+package com.temporal;
+
 import ashley.core.Component;
 
 public class Health extends Component

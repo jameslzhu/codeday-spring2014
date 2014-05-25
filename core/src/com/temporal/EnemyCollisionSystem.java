@@ -31,14 +31,14 @@ public class EnemyCollisionSystem extends EntitySystem
   @Override
   public void update(float deltaTime)
   {
-    IntMap.Keys keys = entities.keys();
+    IntMap.Keys keys = enemyEntities.keys();
     while (keys.hasNext)
     {
-      Entity enemy = entities.get(keys.next());
+      Entity enemy = enemyEntities.get(keys.next());
       if (Intersector.overlapConvexPolygons(player.getComponent(CollisionBox.class).poly, enemy.getComponent(CollisionBox.class).poly))
       {
         // Player health decrease
-        player.getComponent(Health.class) -= enemy.getComponent(Enemy.class).playerHealthHit;
+        player.getComponent(Health.class).current -= enemy.getComponent(Enemy.class).playerHealthHit;
 
         // Player invulnerable
         player.getComponent(Invincibility.class).isInvincible = true;

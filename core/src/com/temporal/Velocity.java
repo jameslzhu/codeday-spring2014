@@ -1,3 +1,7 @@
+package com.temporal;
+
+import ashley.core.Component;
+
 public class Velocity extends Component
 {
 	public double x;

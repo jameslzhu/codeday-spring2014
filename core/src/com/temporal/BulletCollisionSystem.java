@@ -4,6 +4,8 @@ import ashley.core.Entity;
 import ashley.core.Family;
 import ashley.systems.IteratingSystem;
 
+import com.badlogic.gdx.math.Intersector;
+
 public class BulletCollisionSystem extends IteratingSystem
 {
     private Engine engine;
@@ -11,7 +13,7 @@ public class BulletCollisionSystem extends IteratingSystem
     
     public BulletCollisionSystem(int priority, Engine engine, Entity player)
     {
-        super(Family.getFamilyFor(Bullet.class, CollisionBox.java), priority);
+        super(Family.getFamilyFor(Bullet.class, CollisionBox.class), priority);
         this.player = player;
     }
 
