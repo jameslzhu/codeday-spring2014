@@ -31,7 +31,7 @@ public class SpawnSystem extends EntitySystem
           rand.nextFloat() * Gdx.graphics.getWidth(),
           rand.nextFloat() * Gdx.graphics.getHeight());
       Velocity enemyVel = new Velocity(0.0, 0.0);
-      Direction enemyDir = new Direction(0.0f);
+      Direction enemyDir = new Direction(0.0, 0.0);
 
       engine.addEnemy(enemyPos, enemyVel, enemyDir);
 
