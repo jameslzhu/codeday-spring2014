@@ -14,6 +14,7 @@ public class EnemyBulletCollisionSystem extends IteratingSystem
     public EnemyBulletCollisionSystem(int priority, Engine engine, Entity player)
     {
         super(Family.getFamilyFor(EnemyBullet.class, CollisionBox.class), priority);
+        this.engine = engine;
         this.player = player;
     }
 
@@ -23,18 +24,25 @@ public class EnemyBulletCollisionSystem extends IteratingSystem
         if (!player.getComponent(Invincibility.class).isInvincible)
         {
             CollisionBox playerBox = player.getComponent(CollisionBox.class);
+            Position playerPos = player.getComponent(Position.class);
+            playerBox.poly.setPosition((float) playerPos.x, (float) playerPos.y);
+
             Health health = player.getComponent(Health.class);
 
             CollisionBox bulletBox = entity.getComponent(CollisionBox.class);
             EnemyBullet bullet = entity.getComponent(EnemyBullet.class);
+            Position bulletPos = entity.getComponent(Position.class);
+            bulletBox.poly.setPosition((float) bulletPos.x, (float) bulletPos.y);
 
             if (Intersector.overlapConvexPolygons(playerBox.poly, bulletBox.poly))
             {
                 health.current -= bullet.damage;
                 engine.removeEntity(entity);
 
-                if (health.current < 0)
+                if (health.current <= 0)
+                {
                     engine.removeEntity(player);
+                }
             }
         }
     }

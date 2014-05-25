@@ -6,17 +6,38 @@ import ashley.core.Family;
 import ashley.systems.IteratingSystem;
 import ashley.core.EntityListener;
 import ashley.utils.IntMap;
+import ashley.signals.Signal;
+import ashley.signals.Listener;
 
-public class MovementSystem extends IteratingSystem {
-  public MovementSystem (int priority) {
+public class MovementSystem extends IteratingSystem implements Listener<Boolean>
+{
+  private boolean fastmo;
+
+  public MovementSystem (int priority)
+  {
     super(Family.getFamilyFor(Position.class, Velocity.class), priority);
+    fastmo = false;
   }
 
-  public void processEntity (Entity entity, float deltaTime) {
+  public void processEntity (Entity entity, float deltaTime)
+  {
     Position position = entity.getComponent(Position.class);
     Velocity velocity = entity.getComponent(Velocity.class);
 
-    position.x += velocity.x * deltaTime;
-    position.y += velocity.y * deltaTime;
+    if (fastmo)
+    {
+      position.x += velocity.x * deltaTime * 5;
+      position.y += velocity.y * deltaTime * 5;
+    }
+    else
+    {
+      position.x += velocity.x * deltaTime;
+      position.y += velocity.y * deltaTime;
+    }
+  }
+
+  public void receive(Signal<Boolean> sig, Boolean bool)
+  {
+    fastmo = bool;
   }
 }
