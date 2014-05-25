@@ -1,5 +1,7 @@
 package com.temporal;
 
+import java.util.Random;
+
 import ashley.core.Entity;
 import ashley.core.PooledEngine;
 import ashley.signals.Signal;
@@ -14,23 +16,31 @@ public class Engine extends PooledEngine
     private Texture playerTex;
     private Texture playerBulletTex;
     private Texture enemyTex;
+    private Texture chargerTex;
     private Texture enemyBulletTex;
 
     private Sprite playerSprite;
     private Sprite playerBulletSprite;
     private Sprite enemySprite;
+    private Sprite chargerSprite;
     private Sprite enemyBulletSprite;
+
+    private Random rand;
 
     public Engine(int windowWidth, int windowHeight)
     {
+        rand = new Random();
+
         playerTex = new Texture(Gdx.files.internal("player.png"));
         playerBulletTex = new Texture(Gdx.files.internal("Player lazer.png"));
         enemyTex = new Texture(Gdx.files.internal("Fighter.png"));
+        chargerTex = new Texture(Gdx.files.internal("Charge.png"));
         enemyBulletTex = new Texture(Gdx.files.internal("Figher lazer.png"));
 
         playerSprite = new Sprite(playerTex);
         playerBulletSprite = new Sprite(playerBulletTex);
         enemySprite = new Sprite(enemyTex);
+        chargerSprite = new Sprite(chargerTex);
         enemyBulletSprite = new Sprite(enemyBulletTex);
 
         enemySprite.setOrigin(29.0f, 12.5f);
@@ -45,8 +55,9 @@ public class Engine extends PooledEngine
         Velocity enemyVel = new Velocity(0.0, 0.0);
         Direction enemyDir = new Direction(90.0f);
         Enemy enemyComp = new Enemy(2, Enemy.SHOOTER);
-        Health enemyHealth = new Health(100000000);
-        Entity enemy = addEnemy(enemyPos, enemyVel, enemyDir, enemyComp, enemyHealth);
+        Health enemyHealth = new Health(10);
+        Graphics enemyGraph= new Graphics(enemySprite);
+        Entity enemy = addEnemy(enemyPos, enemyVel, enemyDir, enemyComp, enemyHealth, enemyGraph);
 
         Signal<Boolean> signal = new Signal<Boolean>();
 
@@ -56,6 +67,7 @@ public class Engine extends PooledEngine
         InvincibilitySystem invincible = new InvincibilitySystem(3, player);
         PlayerBulletCollisionSystem pbc = new PlayerBulletCollisionSystem(4, this);
         EnemyBulletCollisionSystem ebc = new EnemyBulletCollisionSystem(5, this, player);
+        SpawnSystem spawns = new SpawnSystem(6, this, player);
         GraphicsSystem graphics = new GraphicsSystem(10, windowWidth, windowHeight, 1);
 
         signal.add(movements);
@@ -67,6 +79,7 @@ public class Engine extends PooledEngine
         addSystem(pbc);
         addSystem(ebc);
         addSystem(controls);
+        addSystem(spawns);
 
         addEntity(enemy);
         addEntity(player);
@@ -85,7 +98,7 @@ public class Engine extends PooledEngine
         return player;
     }
 
-    public Entity addEnemy(Position pos, Velocity vel, Direction dir, Enemy damage, Health health)
+    public Entity addEnemy(Position pos, Velocity vel, Direction dir, Enemy damage, Health health, Graphics enemyGraph)
     {
         Entity enemy = new Entity();
         enemy.add(pos);
@@ -102,9 +115,29 @@ public class Engine extends PooledEngine
         Polygon poly = new Polygon(coords);
         poly.setOrigin(29.0f, 12.5f);
         enemy.add(new CollisionBox(poly));
+        enemy.add(enemyGraph);
 
-        enemy.add(new Graphics(enemySprite));
         return enemy;
+    }
+    public void addEnemy(Position pos, Velocity vel, Direction dir)
+    {
+      Health enemyHealth = new Health(10);
+      Enemy enemyComp;
+      Graphics enemyGraph;
+
+      if (rand.nextBoolean())
+      {
+        enemyComp = new Enemy(2, Enemy.CHARGER);
+        enemyGraph = new Graphics(chargerSprite);
+      }
+      else
+      {
+        enemyComp = new Enemy(2, Enemy.SHOOTER);
+        enemyGraph = new Graphics(enemySprite);
+      }
+      Entity enemy = addEnemy(pos, vel, dir, enemyComp, enemyHealth, enemyGraph);
+
+      addEntity(enemy);
     }
 
     public void addPlayerBullet(Position pos, Velocity vel, PlayerBullet damage)
