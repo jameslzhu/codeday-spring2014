@@ -81,8 +81,8 @@ public class Engine extends PooledEngine
         */
         float[] coords = {
               0.0f,   0.0f,
-             50.0f,   0.0f,
-             25.0f,  25.0f
+             58.0f,   0.0f,
+             29.0f,  25.0f
         };
         enemy.add(new CollisionBox(new Polygon(coords)));
 
@@ -100,9 +100,9 @@ public class Engine extends PooledEngine
 
         float[] coords = {
              0.0f,  0.0f,
-            15.0f,  0.0f,
-            15.0f, 15.0f,
-             0.0f, 15.0f
+             7.0f,  0.0f,
+             7.0f,  7.0f,
+             0.0f,  7.0f
         };
         bullet.add(new CollisionBox(new Polygon(coords)));
 

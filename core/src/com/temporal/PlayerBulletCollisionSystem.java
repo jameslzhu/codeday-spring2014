@@ -40,9 +40,6 @@ public class PlayerBulletCollisionSystem extends IteratingSystem
             {
                 if (Intersector.overlapConvexPolygons(enemyBox.poly, bulletBox.poly))
                 {
-                    System.out.println("enemy:(" + enemyBox.poly.getX() + "," + enemyBox.poly.getY() + ")");
-                    System.out.println("bullet:(" + bulletBox.poly.getX() + "," + bulletBox.poly.getY() + ")");
-
                     Health hp = enemy.getComponent(Health.class);
                     hp.current -= bullet.damage;
                     engine.removeEntity(entity);
