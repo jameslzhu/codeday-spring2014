@@ -6,12 +6,21 @@ import ashley.core.Family;
 import ashley.core.EntitySystem;
 import ashley.core.EntityListener;
 import ashley.utils.IntMap;
+import ashley.systems.IteratingSystem;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Gdx;
 
-public class ControlSystem
+
+public class ControlSystem extends IteratingSystem
+
 {
+    public ControlSystem(int priority)
+    {
+        super(Family.getFamilyFor(Position.class, Velocity.class), priority);
+    }
+
+    @Override
     public void processEntity (Entity entity, float deltaTime)
     {
         Position position = entity.getComponent(Position.class);

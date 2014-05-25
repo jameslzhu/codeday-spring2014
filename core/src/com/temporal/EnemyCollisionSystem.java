@@ -30,7 +30,8 @@ public class EnemyCollisionSystem extends EntitySystem
   @Override
   public void update(float deltaTime)
   {
-    if (!player.getComponent(Invincibility.class).isInvincible)
+    System.out.println(player.hasComponent(Invincibility.class));
+    if (!(player.getComponent(Invincibility.class).isInvincible))
     {
       IntMap.Keys keys = enemyEntities.keys();
       while (keys.hasNext)

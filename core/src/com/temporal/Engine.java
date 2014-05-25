@@ -16,24 +16,33 @@ public class Engine extends PooledEngine
 
     public Engine(int windowWidth, int windowHeight)
     {
-        Entity player = new Entity();
         playerTex = new Texture(Gdx.files.internal("player.png"));
         Position playerPos = new Position(windowWidth / 2, windowHeight / 2);
         Velocity playerVel = new Velocity(0.0, 0.0);
         Health health = new Health(10);
-        addPlayer(playerPos, playerVel, health);
+        Invincibility inv = new Invincibility();
+        Entity player = addPlayer(playerPos, playerVel, health, inv);
 
-        GraphicsSystem graphics = new GraphicsSystem(1, windowWidth, windowHeight, 1);
+        ControlSystem controls = new ControlSystem(0);
+        MovementSystem movements = new MovementSystem(1);
+        EnemyCollisionSystem enemyCollisions = new EnemyCollisionSystem(2, player, this);
+        InvincibilitySystem invisibles = new InvincibilitySystem(3, player);
+        GraphicsSystem graphics = new GraphicsSystem(10, windowWidth, windowHeight, 1);
 
         addSystem(graphics);
+        addSystem(movements);
+        addSystem(enemyCollisions);
+        addSystem(invisibles);
+        addSystem(controls);
     }
 
-    public void addPlayer(Position pos, Velocity vel, Health health)
+    public Entity addPlayer(Position pos, Velocity vel, Health health, Invincibility invisible)
     {
         Entity player = new Entity();
         player.add(pos);
         player.add(vel);
         player.add(health);
+        player.add(invisible);
         float size = 20.0f;
         float[] vertices = {
             0.0f, 0.0f,
@@ -45,6 +54,8 @@ public class Engine extends PooledEngine
         player.add(new CollisionBox(shape));
         player.add(new Graphics(playerTex));
         addEntity(player);
+
+        return player;
     }
 
     public void addEnemy(Position pos, Velocity vel, Enemy damage, Health health, CollisionBox box)
