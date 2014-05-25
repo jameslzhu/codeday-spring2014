@@ -2,6 +2,7 @@ package com.temporal;
 
 import ashley.core.Entity;
 import ashley.core.PooledEngine;
+import ashley.signals.Signal;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -33,13 +34,17 @@ public class Engine extends PooledEngine
         Health enemyHealth = new Health(10);
         Entity enemy = addEnemy(enemyPos, enemyVel, enemyDam, enemyHealth);
 
-        ControlSystem controls = new ControlSystem(0, player, this);
+        Signal<Boolean> signal = new Signal<Boolean>();
+
+        ControlSystem controls = new ControlSystem(0, player, this, signal);
         MovementSystem movements = new MovementSystem(1);
         EnemyCollisionSystem enemyCollisions = new EnemyCollisionSystem(2, player, this);
         InvincibilitySystem invincible = new InvincibilitySystem(3, player);
         PlayerBulletCollisionSystem pbc = new PlayerBulletCollisionSystem(4, this);
         EnemyBulletCollisionSystem ebc = new EnemyBulletCollisionSystem(5, this, player);
         GraphicsSystem graphics = new GraphicsSystem(10, windowWidth, windowHeight, 1);
+
+        signal.add(movements);
 
         addSystem(graphics);
         addSystem(movements);

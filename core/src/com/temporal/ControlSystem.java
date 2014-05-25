@@ -6,6 +6,7 @@ import ashley.core.EntitySystem;
 import ashley.core.EntityListener;
 import ashley.utils.IntMap;
 import ashley.systems.IteratingSystem;
+import ashley.signals.Signal;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Gdx;
@@ -14,12 +15,14 @@ public class ControlSystem extends EntitySystem
 {
     private Entity player;
     private Engine engine;
+    private Signal<Boolean> signal;
 
-    public ControlSystem(int priority, Entity player, Engine engine)
+    public ControlSystem(int priority, Entity player, Engine engine, Signal<Boolean> signal)
     {
         super(priority);
         this.player = player;
         this.engine = engine;
+        this.signal = signal;
     }
 
     public void update (float deltaTime)
@@ -30,25 +33,33 @@ public class ControlSystem extends EntitySystem
         velocity.x = 0;
         velocity.y = 0;
 
+        boolean moving = false;
+
         if (Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.A))
         {
             velocity.x = -100;
+            moving = true;
         }
 
         if (Gdx.input.isKeyPressed(Keys.RIGHT) || Gdx.input.isKeyPressed(Keys.D))
         {
             velocity.x = 100;
+            moving = true;
         }
 
         if (Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.W))
         {
             velocity.y = 100;
+            moving = true;
         }
 
         if (Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S))
         {
             velocity.y = -100;
+            moving = true;
         }
+
+        signal.dispatch(moving);
 
         if (Gdx.input.isTouched())
         {
@@ -58,8 +69,8 @@ public class ControlSystem extends EntitySystem
             deltax /= length;
             deltay /= length;
 
-            deltax *= 500;
-            deltay *= 500;
+            deltax *= 100;
+            deltay *= 100;
 
             Position bulletPos = new Position(position.x + 20.0, position.y + 20.0);
             Velocity bulletVel = new Velocity(deltax, deltay);
