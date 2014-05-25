@@ -6,14 +6,14 @@ import ashley.systems.IteratingSystem;
 
 import com.badlogic.gdx.math.Intersector;
 
-public class BulletCollisionSystem extends IteratingSystem
+public class EnemyBulletCollisionSystem extends IteratingSystem
 {
     private Engine engine;
     private Entity player;
     
-    public BulletCollisionSystem(int priority, Engine engine, Entity player)
+    public EnemyBulletCollisionSystem(int priority, Engine engine, Entity player)
     {
-        super(Family.getFamilyFor(Bullet.class, CollisionBox.class), priority);
+        super(Family.getFamilyFor(EnemyBullet.class, CollisionBox.class), priority);
         this.player = player;
     }
 
@@ -26,12 +26,15 @@ public class BulletCollisionSystem extends IteratingSystem
             Health health = player.getComponent(Health.class);
 
             CollisionBox bulletBox = entity.getComponent(CollisionBox.class);
-            Bullet bullet = entity.getComponent(Bullet.class);
+            EnemyBullet bullet = entity.getComponent(EnemyBullet.class);
 
             if (Intersector.overlapConvexPolygons(playerBox.poly, bulletBox.poly))
             {
                 health.current -= bullet.damage;
                 engine.removeEntity(entity);
+
+                if (health.current < 0)
+                    engine.removeEntity(player);
             }
         }
     }

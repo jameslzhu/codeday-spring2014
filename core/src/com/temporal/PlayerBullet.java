@@ -2,7 +2,7 @@ package com.temporal;
 
 import ashley.core.Component;
 
-public class Bullet extends Component
+public class PlayerBullet extends Component
 {
     public int damage;
 }

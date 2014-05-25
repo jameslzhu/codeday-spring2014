@@ -40,7 +40,6 @@ public class EnemyCollisionSystem extends EntitySystem
         {
           // Player health decrease
           player.getComponent(Health.class).current -= enemy.getComponent(Enemy.class).playerHealthHit;
-
           // Player invulnerable
           player.getComponent(Invincibility.class).isInvincible = true;
 
@@ -50,6 +49,9 @@ public class EnemyCollisionSystem extends EntitySystem
 
           // Enemy dies
           engine.removeEntity(enemy);
+
+          if (player.getComponent(Health.class).current < 0)
+            engine.removeEntity(player);
 
           break;
         }
