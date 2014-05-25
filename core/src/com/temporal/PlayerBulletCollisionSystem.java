@@ -35,6 +35,11 @@ public class PlayerBulletCollisionSystem extends IteratingSystem implements Enti
             CollisionBox enemyBox = enemy.getComponent(CollisionBox.class);
             Position enemyPos = enemy.getComponent(Position.class);
             enemyBox.poly.setPosition((float) enemyPos.x, (float) enemyPos.y);
+            if (enemy.hasComponent(Direction.class))
+            {
+              Direction dir = enemy.getComponent(Direction.class);
+              enemyBox.poly.setRotation(dir.angle);
+            }
 
             if (Math.abs(bulletPos.x - enemyPos.x) < 50.0 &&
                 Math.abs(bulletPos.y - enemyPos.y) < 50.0)
