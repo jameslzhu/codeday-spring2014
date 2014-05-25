@@ -5,6 +5,7 @@ import ashley.core.PooledEngine;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Polygon;
 
 public class Engine extends PooledEngine
 {
@@ -18,9 +19,9 @@ public class Engine extends PooledEngine
         Entity player = new Entity();
         playerTex = new Texture(Gdx.files.internal("player.png"));
         Position playerPos = new Position(windowWidth / 2, windowHeight / 2);
-        Velocity velocity = new Velocity(0.0, 0.0);
+        Velocity playerVel = new Velocity(0.0, 0.0);
         Health health = new Health(10);
-        addEntity(player);
+        addPlayer(playerPos, playerVel, health);
 
         GraphicsSystem graphics = new GraphicsSystem(1, windowWidth, windowHeight, 1);
 
@@ -33,15 +34,16 @@ public class Engine extends PooledEngine
         player.add(pos);
         player.add(vel);
         player.add(health);
-        double size = 20.0;
-        Polygon shape = new Polygon(
-            0.0, 0.0,
-            size, 0.0,
+        float size = 20.0f;
+        float[] vertices = {
+            0.0f, 0.0f,
+            size, 0.0f,
             size, size,
-            0.0, size
-        );
+            0.0f, size
+        };
+        Polygon shape = new Polygon(vertices);
         player.add(new CollisionBox(shape));
-        player.add(playerTex);
+        player.add(new Graphics(playerTex));
         addEntity(player);
     }
 
@@ -53,7 +55,7 @@ public class Engine extends PooledEngine
         enemy.add(damage);
         enemy.add(health);
         enemy.add(box);
-        enemy.add(enemyTex);
+        enemy.add(new Graphics(enemyTex));
         addEntity(enemy);
     }
 
@@ -64,7 +66,7 @@ public class Engine extends PooledEngine
         bullet.add(vel);
         bullet.add(damage);
         bullet.add(box);
-        bullet.add(playerBulletTex);
+        bullet.add(new Graphics(playerBulletTex));
         addEntity(bullet);
     }
 
@@ -75,7 +77,7 @@ public class Engine extends PooledEngine
         bullet.add(vel);
         bullet.add(damage);
         bullet.add(box);
-        bullet.add(enemyBulletTex);
+        bullet.add(new Graphics(enemyBulletTex));
         addEntity(bullet);
     }
 
